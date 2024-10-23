@@ -1,9 +1,10 @@
 import expressAsyncHandler from "express-async-handler";
-
+import contactModel from "../models/contactModel.js";
 
 
 const getContact = expressAsyncHandler(async (req, res) => {
-    res.status(200).json({ message: "get all" });
+    const contact = await contactModel.find();
+    res.status(200).json(contact);
 });
 
 const postContact =expressAsyncHandler(async (req,res,next)=>{
@@ -15,7 +16,11 @@ const postContact =expressAsyncHandler(async (req,res,next)=>{
         return next(err);
         
     }
-    res.status(201).json({message:"create new"})
+
+    const contact = await contactModel.create({
+        name,email,phone
+    })
+    res.status(201).json({contact})
 });
 
 const getSpecific = expressAsyncHandler(async (req,res)=>{

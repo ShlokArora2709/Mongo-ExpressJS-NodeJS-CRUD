@@ -1,9 +1,10 @@
 import express from "express";
 import { configDotenv } from "dotenv";
+import connection from "./config/dbConnection.js";
 import contactRoutes from '../mycontacts-backend/routes/contackRoutes.js';
-import errorHandle from "./middleware/errorHandle.js";
 import errorHandler from "./middleware/errorHandle.js";
 configDotenv();
+connection();
 const port = process.env.PORT || 5000;
 
 const app=express();
