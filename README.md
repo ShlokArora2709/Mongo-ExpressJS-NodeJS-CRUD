@@ -57,7 +57,3 @@ A simple Node.js CRUD API for managing user contacts with authentication and aut
 ## Error Handling
 
 - Custom error handling with appropriate HTTP status codes and descriptive error messages for validation, authorization, and server issues.
-
-## License
-
-This project is licensed under the MIT License.
