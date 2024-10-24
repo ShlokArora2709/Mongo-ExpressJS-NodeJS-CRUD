@@ -1,8 +1,9 @@
 import express from "express";
 const router = express.Router();
 import contactController from "../controllers/contactController.js";
+import validateToken from "../middleware/ValidateTokeHandler.js";
 
-
+router.use(validateToken);
 router.route("/")
 .get(contactController.getContact)
 .post(contactController.postContact);

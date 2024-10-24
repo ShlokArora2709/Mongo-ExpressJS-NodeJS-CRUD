@@ -1,7 +1,9 @@
 import expressAsyncHandler from "express-async-handler";
 import userModel from "../models/userModel.js";
 import pkg from "bcryptjs";
-const {hash}=pkg;
+import pkg1 from "jsonwebtoken";
+const {hash,compare}=pkg;
+const {sign} =pkg1;
 
 const registerUser = expressAsyncHandler(async (req, res) => {
     const {username,email,password} =req.body;
@@ -32,12 +34,30 @@ const registerUser = expressAsyncHandler(async (req, res) => {
 });
 
 const loginUser = expressAsyncHandler(async (req, res) => {
-
-    res.json({ message: "login the user" });
+    const {email,password}=req.body;
+    if(!email || !password){
+        res.status(400);
+        throw new Error("Fill of credentials");
+    }
+    const user = await userModel.findOne({email});
+    if(user && await compare(password,user.password)){
+        const accessToken = sign({
+            user:{
+                username:user.username,
+                email:user.email,
+                id: user.id
+            }
+        },process.env.ACCESS_TOKEN,
+    {expiresIn:"50m"})
+        res.status(200).json({accessToken});
+    }else{
+        res.status(401)
+        throw new Error("email or password is not valid")
+    }
 });
 
 const currentUser = expressAsyncHandler(async (req, res) => {
-    res.json({ message: "user info" });
+    res.json(req.user);
 });
 
 export default {registerUser,loginUser,currentUser};
