@@ -24,15 +24,33 @@ const postContact =expressAsyncHandler(async (req,res,next)=>{
 });
 
 const getSpecific = expressAsyncHandler(async (req,res)=>{
-    res.status(200).json({message:"get specific"})
+    const contact = await contactModel.findById(req.params.id);
+    if(!contact){
+        res.status(404);
+        throw new Error("Contact Not found")
+    }
+    res.status(200).json(contact)
 });
 
 const updateContact = expressAsyncHandler (async (req,res)=>{
-    res.status(200).json({message:`updated ${req.params.id}`})
+    const contact = await contactModel.findById(req.params.id);
+    if(!contact){
+        res.status(404);
+        throw new Error("Contact Not found");
+    }
+    const newData = await contactModel.findByIdAndUpdate(req.params.id,req.body);
+    res.status(200).json(newData);
+
 });
 
 const deleteContact = expressAsyncHandler(async (req,res)=>{
-    res.status(200).json({message:`deleted ${req.params.id}`})
+    const contact = await contactModel.findById(req.params.id);
+    if(!contact){
+        res.status(404);
+        throw new Error("Contact Not found");
+    }
+    await contactModel.deleteOne({_id:req.params.id});
+    res.status(200).json(contact);
 });
 
 export default { getContact, postContact, updateContact, getSpecific, deleteContact };
