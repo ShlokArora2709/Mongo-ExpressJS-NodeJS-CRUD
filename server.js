@@ -1,7 +1,7 @@
 import express from "express";
 import { configDotenv } from "dotenv";
 import connection from "./config/dbConnection.js";
-import contactRoutes from '../mycontacts-backend/routes/contackRoutes.js';
+import contactRoutes from '../mycontacts-backend/routes/contactRoutes.js';
 import userRoutes from "../mycontacts-backend/routes/userRoutes.js"
 import errorHandler from "./middleware/errorHandle.js";
 configDotenv();
